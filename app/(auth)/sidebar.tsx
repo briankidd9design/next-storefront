@@ -1,6 +1,7 @@
 "use client";
 import {
   BarChart,
+  ChevronUp,
   CogIcon,
   CreditCard,
   Library,
@@ -11,6 +12,15 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "../../lib/utils";
 import { usePathname } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 const links = [
   { href: "/", label: "Dashboard", icon: BarChart },
@@ -71,6 +81,37 @@ export function Sidebar() {
             </Link>
           ))}
         </nav>
+      </div>
+      <div className="flex h-14 pt-2 items-center border-t px-4">
+        <DropdownMenu>
+          <DropdownMenuTrigger className="outline-none">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-3">
+                <Avatar>
+                  <AvatarImage src="https://avatar.vercel.sh/asdf" />
+                </Avatar>
+                {/* width value is set as an arbitrary value */}
+                {/* truncate will make sure the text does not go beyond 150px */}
+                <div className="flex flex-col items-start w-[150px] truncate">
+                  <p className="text-sm font-medium text-zinc-950">Full Name</p>
+                  <p className="text-xs font-normal text-zinc-500">
+                    Email Address
+                  </p>
+                </div>
+              </div>
+              <ChevronUp className="siz-4 ml-2 text-zinc-500" />
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-[220px] mb-4" align="start">
+            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <Link href="/profile">
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+            </Link>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Log out</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
