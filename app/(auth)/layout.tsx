@@ -1,4 +1,5 @@
 import { Sidebar } from "@/app/(auth)/sidebar";
+import { auth } from "@clerk/nextjs/server";
 
 // In this context, React is globally available
 type Props = {
@@ -7,6 +8,7 @@ type Props = {
 };
 
 export default function AuthLayout({ children }: Props) {
+  auth().protect();
   return (
     // display flex, min-height to screen height or 100vh and flex-direction:column
     // <div className="flex min-h-screen flex-col">

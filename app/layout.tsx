@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ConvexClientProvider } from "./convex-client-provider";
 
 export const metadata: Metadata = {
   title: {
@@ -36,7 +37,9 @@ export default function RootLayout({
   // Essentially we can have a particular layout only applied to one group
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <ConvexClientProvider>{children}</ConvexClientProvider>
+      </body>
     </html>
   );
 }
