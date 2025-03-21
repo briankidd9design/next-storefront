@@ -21,6 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { SignOutButton, useUser } from "@clerk/nextjs";
 
 const links = [
   { href: "/", label: "Dashboard", icon: BarChart },
@@ -50,6 +51,8 @@ export function Sidebar() {
   // Next components are rendered on the server and not on the client. Hooks run on the client and not on the server.So to implement usePathname we need to use the directive use client.
   // We can use pathname to determine the link we are on and if that link is active
   const pathname = usePathname();
+  // user.name user.email etc...
+  const { user } = useUser();
   console.log(pathname);
   // lucide is part ot the ShadCn UI
   //   return <Package2 className="w-4 h-4" />;
@@ -88,14 +91,18 @@ export function Sidebar() {
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-3">
                 <Avatar>
-                  <AvatarImage src="https://avatar.vercel.sh/asdf" />
+                  {/* <AvatarImage src="https://avatar.vercel.sh/asdf" /> */}
+                  <AvatarImage src={user?.imageUrl} alt={user?.fullName} />
                 </Avatar>
                 {/* width value is set as an arbitrary value */}
                 {/* truncate will make sure the text does not go beyond 150px */}
                 <div className="flex flex-col items-start w-[150px] truncate">
-                  <p className="text-sm font-medium text-zinc-950">Full Name</p>
+                  <p className="text-sm font-medium text-zinc-950">
+                    {user?.fullName}
+                  </p>
                   <p className="text-xs font-normal text-zinc-500">
-                    Email Address
+                    {/* Email Address */}
+                    {user?.emailAddresses[0].emailAddress}
                   </p>
                 </div>
               </div>
@@ -109,7 +116,9 @@ export function Sidebar() {
               <DropdownMenuItem>Profile</DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Log out</DropdownMenuItem>
+            <SignOutButton redirectUrl="/sign-in">
+              <DropdownMenuItem>Log out</DropdownMenuItem>
+            </SignOutButton>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
