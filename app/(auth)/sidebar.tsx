@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { SignOutButton, useUser } from "@clerk/nextjs";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 const links = [
   { href: "/", label: "Dashboard", icon: BarChart },
@@ -53,7 +55,12 @@ export function Sidebar() {
   const pathname = usePathname();
   // user.name user.email etc...
   const { user } = useUser();
-  console.log(pathname);
+  // we use the callback getUsers to get the users
+  const users = useQuery(api.users.getUsers, {
+    userId: "j5732emp4wekt531pcm91b3qa97ckkem" as any,
+  });
+  console.log(users);
+  // console.log(pathname);
   // lucide is part ot the ShadCn UI
   //   return <Package2 className="w-4 h-4" />;
   return (
