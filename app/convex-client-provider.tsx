@@ -6,6 +6,8 @@ import { ConvexReactClient } from "convex/react";
 
 // const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL!);
+const webhookSecret = process.env.CLERK_WEBHOOK_SECRET || ``;
+console.log(webhookSecret);
 
 export function ConvexClientProvider({ children }) {
   return (
