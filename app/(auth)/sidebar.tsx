@@ -56,10 +56,10 @@ export function Sidebar() {
   // user.name user.email etc...
   const { user } = useUser();
   // we use the callback getUsers to get the users
-  const users = useQuery(api.users.getUsers, {
-    userId: "j5732emp4wekt531pcm91b3qa97ckkem" as any,
-  });
-  console.log(users);
+  // const users = useQuery(api.users.getUsers, {
+  //   userId: "j5732emp4wekt531pcm91b3qa97ckkem" as any,
+  // });
+  // console.log(users);
   // console.log(pathname);
   // lucide is part ot the ShadCn UI
   //   return <Package2 className="w-4 h-4" />;
