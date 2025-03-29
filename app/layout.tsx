@@ -2,6 +2,7 @@ import "./globals.css";
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ConvexClientProvider } from "./convex-client-provider";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: {
@@ -38,7 +39,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ConvexClientProvider>{children}</ConvexClientProvider>
+        <ConvexClientProvider>
+          {children}
+          {/* adding Toaster from components UI to alert the user that the data has been updated */}
+          <Toaster />
+        </ConvexClientProvider>
       </body>
     </html>
   );

@@ -14,6 +14,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Doc } from "@/convex/_generated/dataModel";
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
+import { toast } from "@/components/ui/use-toast";
+import { ConvexError } from "convex/values";
 
 const settingFormSchema = z.object({
   username: z
@@ -26,14 +31,24 @@ const settingFormSchema = z.object({
     .max(500, { message: "About must be less than 500 characters" }),
 });
 type SettingsFormValues = z.infer<typeof settingFormSchema>;
-export function SettingsForm() {
+
+type Props = {
+  // we use a string data type to reference a particular table
+  user: Doc<"users">;
+};
+
+export function SettingsForm({ user }: Props) {
   //   return <div>Settings Form Content</div>;
+  const updateUser = useMutation(api.users.updateUser);
   const form = useForm<SettingsFormValues>({
     resolver: zodResolver(settingFormSchema),
+    // defaultValues: {
+    //   username: "",
+    //   name: "",
+    //   about: "",
+    // },
     defaultValues: {
-      username: "",
-      name: "",
-      about: "",
+      ...user,
     },
     // we will immediately validate the form with "onChange"
     mode: "onChange",
@@ -41,7 +56,28 @@ export function SettingsForm() {
   //   return <div>SettingsForm</div>;
 
   async function onSubmit(values: SettingsFormValues) {
-    console.log(values);
+    // console.log(values);
+    try {
+      await updateUser({
+        userId: user._id,
+        username: values.username,
+        name: values.name,
+        about: values.about,
+      });
+      toast({
+        description: "Settings updated",
+      });
+    } catch (error) {
+      console.log(error);
+      const message = error instanceof ConvexError ? error.data : "";
+      if (message === "USERNAME_TAKEN") {
+        form.setError("username", {
+          message: "Username taken. Please choose another user name",
+        });
+      } else {
+        toast({ description: "Failed to update settings" });
+      }
+    }
   }
 
   return (
