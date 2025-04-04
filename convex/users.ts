@@ -80,3 +80,13 @@ export const updateUser = mutationWithUser({
     await ctx.db.patch(userId, { name, about, username });
   },
 });
+
+export const updateUserLogo = mutationWithUser({
+  args: {
+    userId: v.id("users"),
+    logo: v.string(),
+  },
+  handler: async (ctx, { userId, logo }) => {
+    await ctx.db.patch(userId, { logo });
+  },
+});

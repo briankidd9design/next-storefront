@@ -19,6 +19,7 @@ import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "@/components/ui/use-toast";
 import { ConvexError } from "convex/values";
+import { SettingsLogo } from "./settings-logo";
 
 const settingFormSchema = z.object({
   username: z
@@ -126,6 +127,7 @@ export function SettingsForm({ user }: Props) {
             </FormItem>
           )}
         />
+        <SettingsLogo user={user} />
         <Button type="submit">Update Settings</Button>
       </form>
     </Form>
