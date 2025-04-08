@@ -34,7 +34,7 @@ export function SettingsLogo({ user }: Props) {
   }
   return (
     <div className="flex items-center gap-3">
-      <CustomImage src={user.logo} alt={user.username} size="medium" />
+      <CustomImage src={user.logo} alt={`name: ${user.name} username: ${user.username}`}  size="medium" />
       <div className="grid w-full max-w-sm items-center gap-1.5">
         <Label htmlFor="logo">Logo</Label>
         <Input

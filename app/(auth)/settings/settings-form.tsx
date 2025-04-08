@@ -15,11 +15,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Doc } from "@/convex/_generated/dataModel";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "@/components/ui/use-toast";
 import { ConvexError } from "convex/values";
 import { SettingsLogo } from "./settings-logo";
+import { SettingsKey } from "./settings-key";
+import { useState } from "react";
 
 const settingFormSchema = z.object({
   username: z
@@ -40,6 +42,11 @@ type Props = {
 
 export function SettingsForm({ user }: Props) {
   //   return <div>Settings Form Content</div>;
+  const [isOpen, setOpen] = useState(false);
+  const stripeSecretKey = useQuery(api.keys.getStripeSecretKey);
+
+  console.log(stripeSecretKey);
+
   const updateUser = useMutation(api.users.updateUser);
   const form = useForm<SettingsFormValues>({
     resolver: zodResolver(settingFormSchema),
@@ -82,54 +89,64 @@ export function SettingsForm({ user }: Props) {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="username" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="about"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>About</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Describe your store"
-                  {...field}
-                  className="resize-none"
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <SettingsLogo user={user} />
-        <Button type="submit">Update Settings</Button>
-      </form>
-    </Form>
+    <>
+      {" "}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input placeholder="username" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="about"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>About</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Describe your store"
+                    {...field}
+                    className="resize-none"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <SettingsLogo user={user} />
+          <Button type="submit">Update Settings</Button>
+        </form>
+      </Form>
+      {/* we need to add an optional chaining operator: ? */}
+      <SettingsKey
+        key={stripeSecretKey?._id}
+        stripeSecretKey={stripeSecretKey}
+        setOpen={setOpen}
+        open={isOpen}
+      />
+    </>
   );
 }

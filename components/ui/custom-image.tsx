@@ -9,7 +9,7 @@ type Props = {
 export function CustomImage({ src, alt, size }: Props) {
   return (
     <img
-      src={src || `https://avatar.vercel.sh/@{alt}`}
+      src={src || `https://avatar.vercel.sh/${alt}`}
       className={cn(
         "shadow-sm border border-black/10 rounded-md",
         size === "small" && "size-10",
