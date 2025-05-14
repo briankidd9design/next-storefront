@@ -23,6 +23,7 @@ import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { ProductContentEditor } from "../product.content.editor";
 
 const newProductSchema = z.object({
   name: z.string().min(3, {
@@ -166,10 +167,9 @@ export function NewProductForm() {
             <FormItem>
               <FormLabel>Content</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder="Product content"
-                  className="resize-none"
-                  {...field}
+                <ProductContentEditor
+                  content={field.value}
+                  onContentUpdate={field.onChange}
                 />
               </FormControl>
               <FormMessage />
